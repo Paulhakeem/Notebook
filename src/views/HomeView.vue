@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from "vue";
 import NoteModal from "../components/NoteModal.vue";
+import Header from "../components/Header.vue";
+
 
 const modalActive = ref(null);
 const toggleModal = () => {
@@ -48,7 +50,7 @@ const addNotes = () => {
     <div class="mb-12 pt-6">
       <label
         for="message"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
+        class="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
         >Write your notes</label
       >
       <textarea
@@ -67,17 +69,22 @@ const addNotes = () => {
     
   </NoteModal>
 
-  <div class="flex justify-between mt-4 mx-6">
-    <h2 class="text-xl mx-2 my-2 font-semibold">Note Book</h2>
-    <button
+  <!-- end of modal -->
+
+  <Header/>
+  <div class="my-20 mx-6">
+    <div
+    class="text-center my-40">
+      <h2 class="text-8xl first-letter:uppercase font-semibold tracking-wider text-gray-500">welcome back🤗</h2>
+      <p class="my-4 text-gray-500">Let us help you keep your important notes safe and secured</p>
+      <button
       @click="toggleModal"
-      class="bg-primary p-1 w-12 rounded-md text-white"
+      class="bg-primary p-1 w-52 my-4 rounded-md text-white transition transform hover:-translate-y-0.5"
     >
       Add
     </button>
-  </div>
+    </div>
 
-  <div class="my-20 mx-6">
     <div class="flex flex-wrap gap-10 justify-center">
       <div
        v-for="note in notes" 
