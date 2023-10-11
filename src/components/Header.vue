@@ -1,16 +1,35 @@
 <script setup>
+import { ref } from 'vue'
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+
+
+const photoURL = ref(null)
+const name = ref(null)
+
+const auth = getAuth()
+onAuthStateChanged(auth, (user) => {
+      if (user) {
+        photoURL.value = user.photoURL;
+        name.value = user.displayName;
+      } else {
+        photoURL.value = null;
+        name.value = null;
+      }
+    });
 </script>
 
 <template>
      <div class="flex justify-between mt-4 mx-6">
-    <h2 class="text-xl mx-2 my-2 font-semibold">Note Book</h2>
+    <h2 class="text-xl mx-2 my-2 font-semibold text-gray-600">
+      <font-awesome-icon :icon="['fas', 'book']" class="text-primary"/>
+      Note Book</h2>
 
     <div class=" w-56 text-right">
     <Menu as="div" class="relative inline-block text-left">
       <div>
         <MenuButton
-          class="inline-flex w-10 h-10 justify-center rounded-full bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          class="inline-flex w-10 h-10 justify-center bg-primary rounded-full px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
         >
        p
         </MenuButton>
@@ -35,6 +54,12 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                 ]"
               >
+              <font-awesome-icon 
+              :class="[
+                  active ? 'bg-primary text-white' : 'text-gray-900',
+                  'px-2 py-2',
+                ]"
+              :icon="['fas', 'user']"/>
              Profile
               </button>
             </MenuItem>
@@ -45,6 +70,12 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                 ]"
               >
+              <font-awesome-icon 
+              :class="[
+                  active ? 'bg-primary text-white' : 'text-gray-900',
+                  'px-2 py-2',
+                ]"
+              :icon="['fas', 'crown']" />
                Favourite notes
               </button>
             </MenuItem>
@@ -57,17 +88,13 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                 ]"
               >
-                Settings
-              </button>
-            </MenuItem>
-            <MenuItem v-slot="{ active }">
-              <button
-                :class="[
+              <font-awesome-icon 
+              :class="[
                   active ? 'bg-primary text-white' : 'text-gray-900',
-                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                  'px-2 py-2',
                 ]"
-              >
-                Move
+              :icon="['fas', 'gear']" />
+                Settings
               </button>
             </MenuItem>
           </div>
@@ -80,6 +107,12 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                 ]"
               >
+              <font-awesome-icon 
+              :class="[
+                  active ? 'bg-primary text-white' : 'text-gray-900',
+                  'px-2 py-2',
+                ]"
+              :icon="['fas', 'right-from-bracket']" />
                Logout
               </button>
             </MenuItem>

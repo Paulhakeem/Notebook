@@ -2,6 +2,9 @@
 import { ref } from "vue";
 import NoteModal from "../components/NoteModal.vue";
 import Header from "../components/Header.vue";
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 
 const modalActive = ref(null);
@@ -33,6 +36,22 @@ const addNotes = () => {
   newNotes.value = ''
   heading.value = ''
 }
+
+const auth = getAuth()
+onAuthStateChanged(auth, (user) => {
+      if (user) {
+        photoURL.value = user.photoURL;
+        name.value = user.displayName;
+      } else {
+        photoURL.value = null;
+        name.value = null;
+      }
+    });
+
+
+toast ('You have succesfully login', {
+   autoClosed: 1000,
+})
 </script>
 
 <template>
@@ -63,7 +82,7 @@ const addNotes = () => {
       <p class="text-red-500 font-semibold text-sm pt-2">{{ errorMessage }}</p>
     </div>
 
-    <button 
+    <button :disabale="notes.length === 0"
     class="mx-4 text-white bg-primary py-2 px-6 cursor-pointer">ADD NOTE</button>
     </form>
     
@@ -73,7 +92,7 @@ const addNotes = () => {
 
   <Header/>
   <div class="my-20 mx-6">
-    <div
+    <div v-if="!notes.length"
     class="text-center my-40">
       <h2 class="text-8xl first-letter:uppercase font-semibold tracking-wider text-gray-500">welcome back🤗</h2>
       <p class="my-4 text-gray-500">Let us help you keep your important notes safe and secured</p>
