@@ -79,9 +79,9 @@ const addNotes = () => {
       <p class="my-4 text-gray-500">Let us help you keep your important notes safe and secured</p>
       <button
       @click="toggleModal"
-      class="bg-primary p-1 w-52 my-4 rounded-md text-white transition transform hover:-translate-y-0.5"
+      class="bg-primary p-1 w-52 my-4 rounded-md text-white uppercase tracking-wider font-semibold transition transform hover:-translate-y-0.5"
     >
-      Add
+     create Notes
     </button>
     </div>
 
