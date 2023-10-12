@@ -21,7 +21,7 @@ onAuthStateChanged(auth, (user) => {
 
 <template>
      <div class="flex justify-between mt-4 mx-6">
-    <h2 class="text-xl mx-2 my-2 font-semibold text-gray-600">
+    <h2 class="text-xl mx-2 my-2 font-semibold text-secondary">
       <font-awesome-icon :icon="['fas', 'book']" class="text-primary"/>
       Note Book</h2>
 

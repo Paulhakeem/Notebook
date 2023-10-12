@@ -94,8 +94,8 @@ toast ('You have succesfully login', {
   <div class="my-20 mx-6">
     <div v-if="!notes.length"
     class="text-center my-40">
-      <h2 class="text-8xl first-letter:uppercase font-semibold tracking-wider text-gray-500">welcome back🤗</h2>
-      <p class="my-4 text-gray-500">Let us help you keep your important notes safe and secured</p>
+      <h2 class="text-8xl first-letter:uppercase font-semibold tracking-wider text-secondary">welcome back🤗</h2>
+      <p class="my-4 text-secondary">Let us help you keep your important notes safe and secured</p>
       <button
       @click="toggleModal"
       class="bg-primary p-1 w-52 my-4 rounded-md text-white uppercase tracking-wider font-semibold transition transform hover:-translate-y-0.5"
@@ -115,7 +115,16 @@ toast ('You have succesfully login', {
         {{ note.text }}
         </p>
         <h3 class="pb-4 mx-3 font-semibold text-gray-700">{{ note.date.toLocaleDateString('en-US') }}</h3>
+        <div class="flex justify-between mx-2 mb-2">
+          <button class="text-white bg-primary w-12 rounded-md p-1">Edit</button>
+          <button class="bg-primary w-6 h-6 rounded-full">
+            <font-awesome-icon :icon="['fas', 'heart']" class="text-secondary"/>
+          </button>
+        </div>
       </div>
+      <font-awesome-icon 
+      @click="toggleModal"
+      :icon="['fas', 'circle-plus']" beat class="pt-16 fa-2x text-primary cursor-pointer"/>
     </div>
   </div>
 </template>
