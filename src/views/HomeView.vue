@@ -9,8 +9,9 @@ import {
   collection,
   addDoc,
   onSnapshot,
-  query,
-  orderBy,
+  deleteDoc,
+  doc,
+  updateDoc
 } from "firebase/firestore";
 
 // import { useNoteStore } from "../store/notes"
@@ -50,8 +51,19 @@ const addNotes = () => {
   heading.value = "";
 };
 
+// delete notes
+const deleteNotes = (id) => {
+  deleteDoc(doc(collection(db, "notes"), id));
+}
 
+// favourite notes
+const favouriteNotes = (id) => {
+const index = notes.value.findIndex(note => note.id === id)
 
+updateDoc (doc(collection(db, "notes") , id), {
+  favourite: !notes.value[index].favourite
+});
+}
 // get data
 onMounted(() => {
   try {
@@ -64,6 +76,7 @@ onMounted(() => {
           head: doc.data().head,
           favourite: doc.data().favourite,
           backgroundColor: doc.data().backgroundColor,
+          date: Date.now()
         };
         getNotes.push(note);
       });
@@ -103,7 +116,7 @@ toast("You have succesfully login", {
           rows="4"
           class="block p-2.5 w-full text-sm text-gray-600 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary focus:outline-none"
           placeholder="Your message..."
-        ></textarea>
+        >jjjj</textarea>
         <p class="text-red-500 font-semibold text-sm pt-2">
           {{ errorMessage }}
         </p>
@@ -148,8 +161,9 @@ toast("You have succesfully login", {
       >
         <div>
           <font-awesome-icon
+            @click="deleteNotes(note.id)"
             :icon="['far', 'trash-can']"
-            class="float-right text-xl mx-2 my-2 text-gray-400"
+            class="float-right text-xl mx-2 my-2 text-gray-400 cursor-pointer"
           />
         </div>
         <h1 class="mx-3 font-bold text-lg pb-2 mt-3">{{ note.head }}</h1>
@@ -165,6 +179,8 @@ toast("You have succesfully login", {
           </button>
           <button class="bg-primary w-6 h-6 rounded-full">
             <font-awesome-icon
+              @click="favouriteNotes(note.id)"
+              :class="note.favourite ? 'text-red-500' : 'text-secondary'"
               :icon="['fas', 'heart']"
               class="text-secondary"
             />
