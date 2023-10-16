@@ -137,7 +137,7 @@ toast("You have succesfully login", {
   <div class="my-18 mx-6">
     <div v-if="!notes?.length" class="text-center my-40">
       <h2
-        class="text-8xl first-letter:uppercase font-semibold tracking-wider text-secondary"
+        class="heading text-8xl first-letter:uppercase font-semibold tracking-wider text-secondary"
       >
         welcome back🤗
       </h2>
@@ -152,7 +152,7 @@ toast("You have succesfully login", {
       </button>
     </div>
 
-    <div class="flex flex-wrap gap-10 justify-center">
+    <div class="flex flex-wrap gap-10 justify-center pb-24">
       <div
         v-for="note in notes"
         :key="note.id"
