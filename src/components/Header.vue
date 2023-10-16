@@ -49,6 +49,25 @@ onAuthStateChanged(auth, (user) => {
         >
           <div class="px-1 py-1">
             <MenuItem v-slot="{ active }">
+              <RouterLink to="/">
+              <button
+                :class="[
+                  active ? 'bg-primary text-white' : 'text-gray-900',
+                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                ]"
+              >
+              <font-awesome-icon 
+              :class="[
+                  active ? 'bg-primary text-white' : 'text-gray-900',
+                  'px-2 py-2',
+                ]"
+              :icon="['fas', 'house']"/>
+             Home
+              </button>
+            </RouterLink>
+            </MenuItem>
+
+            <MenuItem v-slot="{ active }">
               <RouterLink to="/profile">
               <button
                 :class="[
@@ -62,7 +81,25 @@ onAuthStateChanged(auth, (user) => {
                   'px-2 py-2',
                 ]"
               :icon="['fas', 'user']"/>
-             Profile
+             My Profile
+              </button>
+            </RouterLink>
+            </MenuItem>
+            <MenuItem v-slot="{ active }">
+              <RouterLink to="/edit">
+              <button
+                :class="[
+                  active ? 'bg-primary text-white' : 'text-gray-900',
+                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                ]"
+              >
+              <font-awesome-icon 
+              :class="[
+                  active ? 'bg-primary text-white' : 'text-gray-900',
+                  'px-2 py-2',
+                ]"
+              :icon="['fas', 'pen']"/>
+             Edit Profile
               </button>
             </RouterLink>
             </MenuItem>

@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import login from '../views/login.vue'
 import { auth } from '../firebase/base'
 import profile from '../views/profile.vue'
+import EditProfile from '../views/EditProfile.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +23,11 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: profile,
+    },
+    {
+      path: '/edit',
+      name: 'edit profile',
+      component: EditProfile,
     },
   ]
 })

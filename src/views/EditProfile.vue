@@ -25,7 +25,7 @@ onAuthStateChanged(auth, (user) => {
   <div
     class="text-center justify-center max-w-md bg-secondary m-auto my-12 h-auto rounded-lg select-none"
   >
-    <p class="font-semibold pt-4 tracking-wider text-gray-700">My Profile</p>
+    <p class="font-semibold pt-4 tracking-wider text-gray-700">Edit Profile</p>
     <div class="pt-14 flex justify-center text-center m-auto mb-6">
       <img
         :src="photoURL"
@@ -120,7 +120,12 @@ onAuthStateChanged(auth, (user) => {
       </div>
     </form>
 
-    <div class="mx-6 pb-4">
+    <div class="mx-6">
+        <button
+        class="bg-[#21242d] mb-4 first-letter:uppercase text-secondary p-2 w-28 rounded-full"
+      >
+        Save
+      </button>
         <p class="text-primary cursor-pointer font-light text-md first-letter:uppercase hover:text-[#393333]">switch to other account</p>
         <button class="first-letter:uppercase font-medium mt-2 cursor-pointer hover:text-primary">
             log Out
