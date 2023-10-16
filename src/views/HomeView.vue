@@ -116,7 +116,7 @@ toast("You have succesfully login", {
           rows="4"
           class="block p-2.5 w-full text-sm text-gray-600 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary focus:outline-none"
           placeholder="Your message..."
-        >jjjj</textarea>
+        ></textarea>
         <p class="text-red-500 font-semibold text-sm pt-2">
           {{ errorMessage }}
         </p>
@@ -134,7 +134,7 @@ toast("You have succesfully login", {
   <!-- end of modal -->
 
   <Header />
-  <div class="my-20 mx-6">
+  <div class="my-18 mx-6">
     <div v-if="!notes?.length" class="text-center my-40">
       <h2
         class="text-8xl first-letter:uppercase font-semibold tracking-wider text-secondary"
@@ -196,4 +196,13 @@ toast("You have succesfully login", {
       />
     </div>
   </div>
+
+  <footer class="text-center pb-4">
+    <p class="text-secondary font-light">
+      Made with 
+      <font-awesome-icon :icon="['fas', 'heart']" class="text-primary"/>
+      by coderpaul
+    </p>
+    
+  </footer>
 </template>

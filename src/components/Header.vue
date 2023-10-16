@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router';
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 
@@ -48,6 +49,7 @@ onAuthStateChanged(auth, (user) => {
         >
           <div class="px-1 py-1">
             <MenuItem v-slot="{ active }">
+              <RouterLink to="/profile">
               <button
                 :class="[
                   active ? 'bg-primary text-white' : 'text-gray-900',
@@ -62,6 +64,7 @@ onAuthStateChanged(auth, (user) => {
               :icon="['fas', 'user']"/>
              Profile
               </button>
+            </RouterLink>
             </MenuItem>
             <MenuItem v-slot="{ active }">
               <button
