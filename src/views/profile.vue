@@ -2,7 +2,10 @@
 import { ref } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Header from "../components/Header.vue";
+import {useProfileStore} from '../store/notes.js'
 
+
+const useProfile = useProfileStore()
 const photoURL = ref(null);
 const name = ref(null);
 const email = ref(null);
@@ -65,24 +68,19 @@ onAuthStateChanged(auth, (user) => {
       </div>
     </div>
 
-    <form class="mx-4 pb-4 my-10">
+    <form v-for="user in useProfile.userProfile"
+    class="mx-4 pb-4 my-10">
       <div class="flex">
         <div class="flex flex-wrap mx-3 gap-8 w-4/5">
           <div class="my-6">
             <p class="text-left text-gray-400 font-medium">Country</p>
-            <input
-              type="text"
-              class="outline-none text-[#393333] border-b-2 border-b-gray-400 font-light border-b-text-[#393333] pl-2 caret-gray-300 focus:border-b-primary bg-secondary"
-            />
+            <span>{{ user.country }}</span>
           </div>
         </div>
         <div class="flex flex-wrap mx-3 gap-8 w-4/5">
           <div class="my-6">
             <p class="text-left text-gray-400 font-medium">City</p>
-            <input
-              type="text"
-              class="bg-secondary w-full outline-none text-[#393333] border-b-2 font-light border-b-text-[#393333] pl-2 caret-gray-300 focus:border-b-primary border-b-gray-400"
-            />
+            <span>{{ user.city }}</span>
           </div>
         </div>
       </div>
@@ -92,29 +90,17 @@ onAuthStateChanged(auth, (user) => {
       <div class="flex">
         <div class="flex flex-wrap mx-3 gap-2">
           <div class="flex my-6 gap-4">
-            <input
-              type="text"
-              placeholder=""
-              class="w-14 outline-none text-[#393333] border-b-2 border-b-gray-400 font-light border-b-text-[#393333] pl-2 caret-gray-300 focus:border-b-primary bg-secondary"
-            />
+            <span>{{ user.date }}</span>
           </div>
         </div>
         <div class="flex flex-wrap mx-3">
           <div class="flex my-6 gap-4">
-            <input
-              type="text"
-              placeholder=""
-              class="bg-secondary w-32 outline-none text-[#393333] border-b-2 font-light border-b-text-[#393333] pl-2 caret-gray-300 focus:border-b-primary border-b-gray-400"
-            />
+            <span>{{ user.month }}</span>
           </div>
         </div>
         <div class="flex flex-wrap mx-3">
           <div class="flex my-6 gap-4">
-            <input
-              type="text"
-              placeholder=""
-              class="bg-secondary w-14 outline-none text-[#393333] border-b-2 font-light border-b-text-[#393333] pl-2 caret-gray-300 focus:border-b-primary border-b-gray-400"
-            />
+            <span>{{ user.year }}</span>
           </div>
         </div>
       </div>

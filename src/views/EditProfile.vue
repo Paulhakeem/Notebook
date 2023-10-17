@@ -2,6 +2,10 @@
 import { ref } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Header from "../components/Header.vue";
+import {useProfileStore} from '../store/notes.js'
+
+
+const useProfile = useProfileStore()
 
 const photoURL = ref(null);
 const name = ref(null);
@@ -65,12 +69,15 @@ onAuthStateChanged(auth, (user) => {
       </div>
     </div>
 
-    <form class="mx-4 pb-4 my-10">
+    <form @submit="useProfile.userInfor"
+    class="mx-4 pb-4 my-10">
+    <div>
       <div class="flex">
         <div class="flex flex-wrap mx-3 gap-8 w-4/5">
           <div class="my-6">
             <p class="text-left text-gray-400 font-medium">Country</p>
             <input
+              v-model="useProfile.country"
               type="text"
               class="outline-none text-[#393333] border-b-2 border-b-gray-400 font-light border-b-text-[#393333] pl-2 caret-gray-300 focus:border-b-primary bg-secondary"
             />
@@ -80,6 +87,7 @@ onAuthStateChanged(auth, (user) => {
           <div class="my-6">
             <p class="text-left text-gray-400 font-medium">City</p>
             <input
+            v-model="useProfile.city"
               type="text"
               class="bg-secondary w-full outline-none text-[#393333] border-b-2 font-light border-b-text-[#393333] pl-2 caret-gray-300 focus:border-b-primary border-b-gray-400"
             />
@@ -93,6 +101,7 @@ onAuthStateChanged(auth, (user) => {
         <div class="flex flex-wrap mx-3 gap-2">
           <div class="flex my-6 gap-4">
             <input
+              v-model="useProfile.date"
               type="text"
               placeholder=""
               class="w-14 outline-none text-[#393333] border-b-2 border-b-gray-400 font-light border-b-text-[#393333] pl-2 caret-gray-300 focus:border-b-primary bg-secondary"
@@ -102,6 +111,7 @@ onAuthStateChanged(auth, (user) => {
         <div class="flex flex-wrap mx-3">
           <div class="flex my-6 gap-4">
             <input
+            v-model="useProfile.month"
               type="text"
               placeholder=""
               class="bg-secondary w-32 outline-none text-[#393333] border-b-2 font-light border-b-text-[#393333] pl-2 caret-gray-300 focus:border-b-primary border-b-gray-400"
@@ -111,6 +121,7 @@ onAuthStateChanged(auth, (user) => {
         <div class="flex flex-wrap mx-3">
           <div class="flex my-6 gap-4">
             <input
+              v-model="useProfile.year"
               type="text"
               placeholder=""
               class="bg-secondary w-14 outline-none text-[#393333] border-b-2 font-light border-b-text-[#393333] pl-2 caret-gray-300 focus:border-b-primary border-b-gray-400"
@@ -118,10 +129,11 @@ onAuthStateChanged(auth, (user) => {
           </div>
         </div>
       </div>
-    </form>
+      </div>
 
-    <div class="mx-6">
+      <div class="mx-6">
         <button
+        @click="useProfile.userInfor"
         class="bg-[#21242d] mb-4 first-letter:uppercase text-secondary p-2 w-28 rounded-full"
       >
         Save
@@ -131,5 +143,6 @@ onAuthStateChanged(auth, (user) => {
             log Out
         </button>
     </div>
+    </form>
   </div>
 </template>

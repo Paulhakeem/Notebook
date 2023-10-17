@@ -197,7 +197,9 @@ toast("You have succesfully login", {
     </div>
   </div>
 
-  <footer class="text-center pb-4">
+  <footer 
+  v-if="notes?.length"
+    class="text-center pb-4">
     <p class="text-secondary font-light">
       Made with 
       <font-awesome-icon :icon="['fas', 'heart']" class="text-primary"/>
