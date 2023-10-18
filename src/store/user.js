@@ -27,7 +27,7 @@ export const useProfileStore = defineStore('profile', () => {
             month: month.value,
             year: year.value
           });
-          toast("Profile updated", {
+          toast("Profile updated!!", {
             autoClosed: 1000,
           })
     }

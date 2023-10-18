@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
 import { ref } from 'vue'
-import { useRouter } from "vue-router";
+import { useRouter } from "vue-router"
 import {
     getAuth,
     createUserWithEmailAndPassword,
@@ -47,30 +47,22 @@ export const useLoginStore = defineStore('login', () => {
           .then(() => {
             router.push({
               path: "/",
-            });
+            })
           })
           .catch((err) => {
             alert(err.message);
-          });
-      };
+          })
+      }
      
       const logOut = () => {
-        signOut(getAuth(),
-        loginDetails.value.email,
-        loginDetails.value.password)
+        signOut(getAuth())
         .then(() => {
-            loginDetails.value = {
-                name: null,
-                email: null,
-                password: null,
-              }
               router.push({
                 path: "/login",
               });
           }).catch((error) => {
-          laert (error.message)
-          });
-    
+          alert (error.message)
+          })
       }
      
       return {loginDetails, googleLogin, userSignup, logOut}

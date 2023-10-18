@@ -1,10 +1,10 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import NoteModal from "../components/NoteModal.vue";
-import Header from "../components/Header.vue";
-import { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
-import { db } from "../firebase/base";
+import { ref, onMounted } from "vue"
+import NoteModal from "../components/NoteModal.vue"
+import Header from "../components/Header.vue"
+import { toast } from "vue3-toastify"
+import "vue3-toastify/dist/index.css"
+import { db } from "../firebase/base"
 import {
   collection,
   addDoc, 
@@ -12,7 +12,7 @@ import {
   deleteDoc,
   doc,
   updateDoc
-} from "firebase/firestore";
+} from "firebase/firestore"
 
 
 const modalActive = ref(null);
