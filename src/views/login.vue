@@ -1,54 +1,9 @@
 <script setup>
-import { ref } from "vue";
-import { useRouter, RouterLink } from "vue-router";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-} from "firebase/auth";
+import { useLoginStore } from "../store/login.js"
 
-const router = useRouter();
-const provider = new GoogleAuthProvider();
+const login = useLoginStore()
 
-const loginDetails = ref({
-  name: "",
-  email: "",
-  password: "",
-});
 
-const userSignup = async () => {
- await createUserWithEmailAndPassword(
-    getAuth(),
-    loginDetails.value.email,
-    loginDetails.value.password
-  )
-    .then(() => {
-      loginDetails.value = {
-        name: "",
-        email: "",
-        password: "",
-      };
-      router.push({
-        path: "/",
-      });
-    })
-    .catch((err) => {
-      alert(err.message);
-    });
-};
-
-const googleLogin = () => {
-  signInWithPopup(getAuth(), provider)
-    .then(() => {
-      router.push({
-        path: "/",
-      });
-    })
-    .catch((err) => {
-      alert(err.message);
-    });
-};
 </script>
 <template>
   <div class="bg-gray-800">
@@ -73,7 +28,7 @@ const googleLogin = () => {
               Github
             </button>
             <button
-              @click="googleLogin"
+              @click="login.googleLogin"
               class="flex items-center py-2 px-4 text-sm uppercase rounded bg-white hover:bg-gray-100 text-primary border border-transparent hover:border-transparent hover:text-gray-700 shadow-md hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
             >
               <svg
@@ -110,10 +65,10 @@ const googleLogin = () => {
 
         <!-- form -->
 
-        <form @submit.prevent="userSignup" class="mt-6">
+        <form @submit.prevent="login.userSignup" class="mt-6">
           <div class="relative">
             <input
-              v-model="loginDetails.name"
+              v-model="login.loginDetails.name"
               class="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600 transition rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
               id="username"
               type="text"
@@ -134,7 +89,7 @@ const googleLogin = () => {
           </div>
           <div class="relative mt-3">
             <input
-              v-model="loginDetails.email"
+              v-model="login.loginDetails.email"
               class="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600 transition rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
               id="username"
               type="email"
@@ -158,7 +113,7 @@ const googleLogin = () => {
           </div>
           <div class="relative mt-3">
             <input
-            v-model="loginDetails.password"
+            v-model="login.loginDetails.password"
               class="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600 transition rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
               id="username"
               type="text"

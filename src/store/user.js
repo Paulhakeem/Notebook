@@ -1,11 +1,14 @@
 import {defineStore} from 'pinia'
 import { ref, onMounted } from 'vue'
 import { db } from "../firebase/base";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 import {
     collection,
     addDoc,
     onSnapshot,
-  } from "firebase/firestore";
+  } from "firebase/firestore"
+  
 
 export const useProfileStore = defineStore('profile', () => {
     const country = ref(null)
@@ -24,7 +27,9 @@ export const useProfileStore = defineStore('profile', () => {
             month: month.value,
             year: year.value
           });
-         
+          toast("Profile updated", {
+            autoClosed: 1000,
+          })
     }
 
 
@@ -39,6 +44,7 @@ export const useProfileStore = defineStore('profile', () => {
               city: doc.data().city,
               date: doc.data().date,
               month: doc.data().month,
+              year: doc.data().year
             };
             user.push(details);
           });
@@ -48,5 +54,6 @@ export const useProfileStore = defineStore('profile', () => {
         alert(err.message);
       }
     })
+    
     return { country, city, date, year, month, userProfile, userInfor }
 })

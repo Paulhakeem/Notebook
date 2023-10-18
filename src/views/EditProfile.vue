@@ -2,7 +2,8 @@
 import { ref } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Header from "../components/Header.vue";
-import {useProfileStore} from '../store/notes.js'
+import {useProfileStore} from '../store/user.js'
+
 
 
 const useProfile = useProfileStore()
@@ -23,6 +24,8 @@ onAuthStateChanged(auth, (user) => {
     email.value = null;
   }
 });
+
+
 </script>
 <template>
     <Header/>
@@ -69,7 +72,7 @@ onAuthStateChanged(auth, (user) => {
       </div>
     </div>
 
-    <form @submit="useProfile.userInfor"
+    <form @submit.prevent="useProfile.userInfor"
     class="mx-4 pb-4 my-10">
     <div>
       <div class="flex">
@@ -103,7 +106,7 @@ onAuthStateChanged(auth, (user) => {
             <input
               v-model="useProfile.date"
               type="text"
-              placeholder=""
+              placeholder="DD"
               class="w-14 outline-none text-[#393333] border-b-2 border-b-gray-400 font-light border-b-text-[#393333] pl-2 caret-gray-300 focus:border-b-primary bg-secondary"
             />
           </div>
@@ -113,8 +116,8 @@ onAuthStateChanged(auth, (user) => {
             <input
             v-model="useProfile.month"
               type="text"
-              placeholder=""
-              class="bg-secondary w-32 outline-none text-[#393333] border-b-2 font-light border-b-text-[#393333] pl-2 caret-gray-300 focus:border-b-primary border-b-gray-400"
+              placeholder="MM"
+              class="bg-secondary w-32 text-center outline-none text-[#393333] border-b-2 font-light border-b-text-[#393333] pl-2 caret-gray-300 focus:border-b-primary border-b-gray-400"
             />
           </div>
         </div>
@@ -123,7 +126,7 @@ onAuthStateChanged(auth, (user) => {
             <input
               v-model="useProfile.year"
               type="text"
-              placeholder=""
+              placeholder="YYYY"
               class="bg-secondary w-14 outline-none text-[#393333] border-b-2 font-light border-b-text-[#393333] pl-2 caret-gray-300 focus:border-b-primary border-b-gray-400"
             />
           </div>
@@ -133,7 +136,6 @@ onAuthStateChanged(auth, (user) => {
 
       <div class="mx-6">
         <button
-        @click="useProfile.userInfor"
         class="bg-[#21242d] mb-4 first-letter:uppercase text-secondary p-2 w-28 rounded-full"
       >
         Save

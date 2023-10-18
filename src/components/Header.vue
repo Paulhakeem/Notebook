@@ -3,8 +3,9 @@ import { ref } from 'vue'
 import { RouterLink } from 'vue-router';
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { useLoginStore } from '../store/login.js'
 
-
+const login = useLoginStore()
 const photoURL = ref(null)
 const name = ref(null)
 
@@ -142,6 +143,7 @@ onAuthStateChanged(auth, (user) => {
           <div class="px-1 py-1">
             <MenuItem v-slot="{ active }">
               <button
+              @click="login.logOut"
                 :class="[
                   active ? 'bg-primary text-white' : 'text-gray-900',
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',

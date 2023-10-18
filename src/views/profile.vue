@@ -1,16 +1,19 @@
 <script setup>
-import { ref } from "vue";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import Header from "../components/Header.vue";
-import {useProfileStore} from '../store/notes.js'
+import { ref } from "vue"
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth"
+import Header from "../components/Header.vue"
+import {useProfileStore} from '../store/user.js'
+import { useLoginStore } from "../store/login.js"
 
-
+const login = useLoginStore()
 const useProfile = useProfileStore()
-const photoURL = ref(null);
-const name = ref(null);
-const email = ref(null);
+const photoURL = ref(null)
+const name = ref(null)
+const email = ref(null)
 
-const auth = getAuth();
+const auth = getAuth()
+
+
 onAuthStateChanged(auth, (user) => {
   if (user) {
     photoURL.value = user.photoURL;
@@ -74,33 +77,36 @@ onAuthStateChanged(auth, (user) => {
         <div class="flex flex-wrap mx-3 gap-8 w-4/5">
           <div class="my-6">
             <p class="text-left text-gray-400 font-medium">Country</p>
-            <span>{{ user.country }}</span>
+            <span class="text-left text-gray-600">{{ user.country }}</span>
           </div>
         </div>
         <div class="flex flex-wrap mx-3 gap-8 w-4/5">
           <div class="my-6">
             <p class="text-left text-gray-400 font-medium">City</p>
-            <span>{{ user.city }}</span>
+            <span class="text-left text-gray-600">{{ user.city }}</span>
           </div>
         </div>
       </div>
-      <div class="text-left mx-4">
+      <div class="text-left mx-3">
         <p class="text-gray-400">Date of birth(optional)</p>
       </div>
       <div class="flex">
         <div class="flex flex-wrap mx-3 gap-2">
           <div class="flex my-6 gap-4">
-            <span>{{ user.date }}</span>
+            <p class="text-left text-gray-400 font-medium">Date</p>
+            <span class="text-left text-gray-600"> {{ user.date }}</span>
           </div>
         </div>
         <div class="flex flex-wrap mx-3">
           <div class="flex my-6 gap-4">
-            <span>{{ user.month }}</span>
+            <p class="text-left text-gray-400 font-medium">Month</p>
+            <span class="text-left text-gray-600"> {{ user.month }}</span>
           </div>
         </div>
         <div class="flex flex-wrap mx-3">
           <div class="flex my-6 gap-4">
-            <span>{{ user.year }}</span>
+            <p class="text-left text-gray-400 font-medium">Year</p>
+            <span class="text-left text-gray-600"> {{ user.year }}</span>
           </div>
         </div>
       </div>
@@ -108,7 +114,9 @@ onAuthStateChanged(auth, (user) => {
 
     <div class="mx-6 pb-4">
         <p class="text-primary cursor-pointer font-light text-md first-letter:uppercase hover:text-[#393333]">switch to other account</p>
-        <button class="first-letter:uppercase font-medium mt-2 cursor-pointer hover:text-primary">
+        <button 
+        @click="login.logOut"
+        class="first-letter:uppercase font-medium mt-2 cursor-pointer hover:text-primary">
             log Out
         </button>
     </div>

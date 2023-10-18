@@ -7,18 +7,13 @@ import "vue3-toastify/dist/index.css";
 import { db } from "../firebase/base";
 import {
   collection,
-  addDoc,
+  addDoc, 
   onSnapshot,
   deleteDoc,
   doc,
   updateDoc
 } from "firebase/firestore";
 
-// import { useNoteStore } from "../store/notes"
-// const useNote = useNoteStore()
-
-const notesCollection = collection(db, "todos");
-// const notesQuery = query(notesCollection, orderBy("date", "desc"));
 
 const modalActive = ref(null);
 const toggleModal = () => {
@@ -64,6 +59,8 @@ updateDoc (doc(collection(db, "notes") , id), {
   favourite: !notes.value[index].favourite
 });
 }
+
+
 // get data
 onMounted(() => {
   try {
@@ -152,7 +149,7 @@ toast("You have succesfully login", {
       </button>
     </div>
 
-    <div class="flex flex-wrap gap-10 justify-center pb-24">
+    <div class="flex flex-wrap gap-10 justify-center pb-24 my-20">
       <div
         v-for="note in notes"
         :key="note.id"
