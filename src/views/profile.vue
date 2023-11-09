@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue"
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
 import Header from "../components/Header.vue"
 import {useProfileStore} from '../store/user.js'
 import { useLoginStore } from "../store/login.js"
@@ -35,7 +35,7 @@ onAuthStateChanged(auth, (user) => {
     <div class="pt-14 flex justify-center text-center m-auto mb-6">
       <img
         :src="photoURL"
-        alt=""
+        alt="profile"
         class="rounded-full border-t-8 border-primary"
       />
     </div>

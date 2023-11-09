@@ -1,30 +1,34 @@
 <script setup>
-import { ref, onMounted } from "vue"
-import NoteModal from "../components/NoteModal.vue"
-import Header from "../components/Header.vue"
-import { toast } from "vue3-toastify"
-import "vue3-toastify/dist/index.css"
-import { db } from "../firebase/base"
+import { ref, onMounted } from "vue";
+import NoteModal from "../components/NoteModal.vue";
+import Header from "../components/Header.vue";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+import { getAuth } from "firebase/auth";
+import { db } from "../firebase/base";
 import {
   collection,
-  addDoc, 
+  addDoc,
   onSnapshot,
   deleteDoc,
   doc,
-  updateDoc
-} from "firebase/firestore"
-
+  updateDoc,
+  where,
+  query,
+} from "firebase/firestore";
 
 const modalActive = ref(null);
 const toggleModal = () => {
   modalActive.value = !modalActive.value;
 };
 
+const auth = getAuth();
+const user = ref(null);
 const newNotes = ref("");
 const heading = ref("");
 const errorMessage = ref("");
 const notes = ref([]);
-console.log(notes);
+
 // add data
 function getRandomColor() {
   return "hsl(" + Math.random() * 360 + ", 100%, 75%)";
@@ -49,22 +53,33 @@ const addNotes = () => {
 // delete notes
 const deleteNotes = (id) => {
   deleteDoc(doc(collection(db, "notes"), id));
-}
+};
 
 // favourite notes
 const favouriteNotes = (id) => {
-const index = notes.value.findIndex(note => note.id === id)
+  const index = notes.value.findIndex((note) => note.id === id);
 
-updateDoc (doc(collection(db, "notes") , id), {
-  favourite: !notes.value[index].favourite
-});
-}
-
+  updateDoc(doc(collection(db, "notes"), id), {
+    favourite: !notes.value[index].favourite,
+  });
+};
 
 // get data
 onMounted(() => {
+  auth.onAuthStateChanged((firebaseUser) => {
+    if (firebaseUser) {
+      user.value = firebaseUser
+    } else {
+      user.value = null;
+      notes.value = [];
+    }
+  });
   try {
-    onSnapshot(collection(db, "notes"), (querySnapshot) => {
+    const q = query(
+      collection(db, "notes"),
+      // where("uid", "==", user.value.uid)
+    );
+    onSnapshot(q, (querySnapshot) => {
       const getNotes = [];
       querySnapshot.forEach((doc) => {
         const note = {
@@ -73,11 +88,15 @@ onMounted(() => {
           head: doc.data().head,
           favourite: doc.data().favourite,
           backgroundColor: doc.data().backgroundColor,
-          date: Date.now()
+          date: Date.now(),
         };
         getNotes.push(note);
       });
       notes.value = getNotes;
+      notes.value = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
     });
   } catch (err) {
     alert(err.message);
@@ -194,14 +213,11 @@ toast("You have succesfully login", {
     </div>
   </div>
 
-  <footer 
-  v-if="notes?.length"
-    class="text-center pb-4">
+  <footer v-if="notes?.length" class="text-center pb-4">
     <p class="text-secondary font-light">
-      Made with 
-      <font-awesome-icon :icon="['fas', 'heart']" class="text-primary"/>
+      Made with
+      <font-awesome-icon :icon="['fas', 'heart']" class="text-primary" />
       by coderpaul
     </p>
-    
   </footer>
 </template>
