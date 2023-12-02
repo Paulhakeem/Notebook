@@ -1,11 +1,11 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import NoteModal from "../components/NoteModal.vue";
-import Header from "../components/Header.vue";
-import { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
-import { getAuth } from "firebase/auth";
-import { db } from "../firebase/base";
+import { ref, onMounted } from "vue"
+import NoteModal from "../components/NoteModal.vue"
+import Header from "../components/Header.vue"
+import { toast } from "vue3-toastify"
+import "vue3-toastify/dist/index.css"
+import { getAuth } from "firebase/auth"
+import { db } from "../firebase/base"
 import {
   collection,
   addDoc,
@@ -15,7 +15,7 @@ import {
   updateDoc,
   where,
   query,
-} from "firebase/firestore";
+} from "firebase/firestore"
 
 const modalActive = ref(null);
 const toggleModal = () => {
@@ -23,11 +23,11 @@ const toggleModal = () => {
 };
 
 const auth = getAuth();
-const user = ref(null);
 const newNotes = ref("");
 const heading = ref("");
 const errorMessage = ref("");
 const notes = ref([]);
+
 
 // add data
 function getRandomColor() {
@@ -44,8 +44,7 @@ const addNotes = () => {
     favourite: false,
     date: Date.now(),
     backgroundColor: getRandomColor(),
-  });
-
+  })
   newNotes.value = "";
   heading.value = "";
 };
@@ -64,16 +63,15 @@ const favouriteNotes = (id) => {
   });
 };
 
+
+
 // get data
 onMounted(() => {
-  auth.onAuthStateChanged((firebaseUser) => {
-    if (firebaseUser) {
-      user.value = firebaseUser
-    } else {
-      user.value = null;
-      notes.value = [];
-    }
-  });
+const user = auth.currentUser;
+if (user !== null) {
+  const uid = user.uid;
+  console.log(user);
+}
   try {
     const q = query(
       collection(db, "notes"),
@@ -88,7 +86,7 @@ onMounted(() => {
           head: doc.data().head,
           favourite: doc.data().favourite,
           backgroundColor: doc.data().backgroundColor,
-          date: Date.now(),
+          date: doc.data().date
         };
         getNotes.push(note);
       });
@@ -167,8 +165,8 @@ toast("You have succesfully login", {
         create Notes
       </button>
     </div>
-
-    <div class="flex flex-wrap gap-10 justify-center pb-24 my-20">
+    <transition name="slide-fade">
+      <div class="flex flex-wrap gap-10 justify-center pb-24 my-20">
       <div
         v-for="note in notes"
         :key="note.id"
@@ -187,7 +185,7 @@ toast("You have succesfully login", {
           {{ note.text }}
         </p>
         <h3 class="pb-4 mx-3 font-semibold text-gray-700">
-          {{ note.date }}
+          {{note.date}}
         </h3>
         <div class="flex justify-between mx-2 mb-2">
           <button class="text-white bg-primary w-12 rounded-md p-1">
@@ -211,6 +209,8 @@ toast("You have succesfully login", {
         class="pt-16 fa-2x text-primary cursor-pointer"
       />
     </div>
+    </transition>
+    
   </div>
 
   <footer v-if="notes?.length" class="text-center pb-4">
@@ -221,3 +221,19 @@ toast("You have succesfully login", {
     </p>
   </footer>
 </template>
+
+<style scoped>
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+</style>

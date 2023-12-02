@@ -1,6 +1,8 @@
 import {defineStore} from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from "vue-router"
+import { useVuelidate } from '@vuelidate/core'
+import { required, email, minLength, sameAs } from '@vuelidate/validators'
 import {
     getAuth,
     createUserWithEmailAndPassword,
@@ -11,7 +13,6 @@ import {
 
 export const useLoginStore = defineStore('login', () => {
 
- 
       const router = useRouter();
       const provider = new GoogleAuthProvider();
       
@@ -20,8 +21,26 @@ export const useLoginStore = defineStore('login', () => {
         email: "",
         password: "",
       });
+
+         
       
+      const rules = computed(() => {
+        return {
+          name: {required, minLength: minLength(10)},
+          email: {required, email},
+          password: {required, sameAs: sameAs(loginDetails.password)},
+        }
+      })
+
+      const v$ = useVuelidate(rules, loginDetails)
+
       const userSignup = async () => {
+        const results = await v$.value.$validate()
+        if(results) {
+          alert ('Login succeful')
+        }else {
+          alert ('Please enter the required details')
+        }
        await createUserWithEmailAndPassword(
           getAuth(),
           loginDetails.value.email,
@@ -65,5 +84,5 @@ export const useLoginStore = defineStore('login', () => {
           })
       }
      
-      return {loginDetails, googleLogin, userSignup, logOut}
+      return {loginDetails, googleLogin, userSignup, logOut, rules}
 })
