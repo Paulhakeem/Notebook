@@ -10,6 +10,7 @@ const useProfile = useProfileStore()
 const photoURL = ref(null)
 const name = ref(null)
 const email = ref(null)
+const userId = ref('')
 
 const auth = getAuth()
 
@@ -19,6 +20,7 @@ onAuthStateChanged(auth, (user) => {
     photoURL.value = user.photoURL;
     name.value = user.displayName;
     email.value = user.email;
+    userId.value = user.uid
   } else {
     photoURL.value = null;
     name.value = null;
@@ -27,7 +29,8 @@ onAuthStateChanged(auth, (user) => {
 });
 </script>
 <template>
-    <Header/>
+   <section v-if="email.value === userId.value">
+     <Header/>
   <div
     class="text-center justify-center max-w-md bg-secondary m-auto my-12 h-auto rounded-lg select-none"
   >
@@ -71,7 +74,7 @@ onAuthStateChanged(auth, (user) => {
       </div>
     </div>
 
-    <form v-for="user in useProfile.userProfile"
+    <form v-for="user in useProfile.userProfile" :key="user.id"
     class="mx-4 pb-4 my-10">
       <div class="flex">
         <div class="flex flex-wrap mx-3 gap-8 w-4/5">
@@ -121,4 +124,5 @@ onAuthStateChanged(auth, (user) => {
         </button>
     </div>
   </div>
+   </section>
 </template>
