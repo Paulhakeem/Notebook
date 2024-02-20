@@ -1,11 +1,11 @@
 <script setup>
-import { ref, onMounted } from "vue"
-import NoteModal from "../components/NoteModal.vue"
-import Header from "../components/Header.vue"
-import { toast } from "vue3-toastify"
-import "vue3-toastify/dist/index.css"
-import { getAuth } from "firebase/auth"
-import { db } from "../firebase/base"
+import { ref, onMounted } from "vue";
+import NoteModal from "../components/NoteModal.vue";
+import Header from "../components/Header.vue";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+import { getAuth } from "firebase/auth";
+import { db } from "../firebase/base";
 import {
   collection,
   addDoc,
@@ -15,7 +15,7 @@ import {
   updateDoc,
   where,
   query,
-} from "firebase/firestore"
+} from "firebase/firestore";
 
 const modalActive = ref(null);
 const toggleModal = () => {
@@ -27,8 +27,8 @@ const newNotes = ref("");
 const heading = ref("");
 const errorMessage = ref("");
 const notes = ref([]);
-const userId = ref('')
-const email = ref('')
+const userId = ref("");
+const email = ref("");
 
 // add data
 function getRandomColor() {
@@ -45,7 +45,7 @@ const addNotes = () => {
     favourite: false,
     date: Date.now(),
     backgroundColor: getRandomColor(),
-  })
+  });
   newNotes.value = "";
   heading.value = "";
 };
@@ -64,19 +64,17 @@ const favouriteNotes = (id) => {
   });
 };
 
-
-
 // get data
 onMounted(() => {
-const user = auth.currentUser;
-if (user !== null) {
-  userId.value = user.uid
-  email.value = user.email
-  console.log(user.uid);
-}
+  const user = auth.currentUser;
+  if (user !== null) {
+    userId.value = user.uid;
+    email.value = user.email;
+    console.log(email.value);
+  }
   try {
     const q = query(
-      collection(db, "notes"),
+      collection(db, "notes")
       // where("uid", "==", user.value.uid)
     );
     onSnapshot(q, (querySnapshot) => {
@@ -88,7 +86,7 @@ if (user !== null) {
           head: doc.data().head,
           favourite: doc.data().favourite,
           backgroundColor: doc.data().backgroundColor,
-          date: doc.data().date
+          date: doc.data().date,
         };
         getNotes.push(note);
       });
@@ -168,51 +166,48 @@ toast("You have succesfully login", {
       </button>
     </div>
     <transition name="slide-fade">
-      <div v-if="userId.value === email.value" class="flex flex-wrap gap-10 justify-center pb-24 my-20">
       <div
-        v-for="note in notes"
-        :key="note.id"
-        :style="{ backgroundColor: note.backgroundColor }"
-        class="flex flex-col w-80 h-auto rounded-md"
+        v-if="userId.value === email.value"
+        class="flex flex-wrap gap-10 justify-center pb-24 my-20"
       >
-        <div>
-          <font-awesome-icon
-            @click="deleteNotes(note.id)"
-            :icon="['far', 'trash-can']"
-            class="float-right text-xl mx-2 my-2 text-gray-400 cursor-pointer"
-          />
-        </div>
-        <h1 class="mx-3 font-bold text-lg pb-2 mt-3">{{ note.head }}</h1>
-        <p class="mx-3 pb-6">
-          {{ note.text }}
-        </p>
-        <h3 class="pb-4 mx-3 font-semibold text-gray-700">
-          {{note.date}}
-        </h3>
-        <div class="flex justify-between mx-2 mb-2">
-          <button class="text-white bg-primary w-12 rounded-md p-1">
-            Edit
-          </button>
-          <button class="bg-primary w-6 h-6 rounded-full">
+        <div
+          v-for="note in notes"
+          :key="note.id"
+          :style="{ backgroundColor: note.backgroundColor }"
+          class="flex flex-col w-80 h-auto rounded-md"
+        >
+          <div>
             <font-awesome-icon
-              @click="favouriteNotes(note.id)"
-              :class="note.favourite ? 'text-red-500' : 'text-secondary'"
-              :icon="['fas', 'heart']"
-              class="text-secondary"
+              @click="deleteNotes(note.id)"
+              :icon="['far', 'trash-can']"
+              class="float-right text-xl mx-2 my-2 text-red-600 cursor-pointer"
             />
-          </button>
+          </div>
+          <h1 class="mx-3 font-bold text-lg pb-2 mt-3">{{ note.head }}</h1>
+          <p class="mx-3 pb-6">
+            {{ note.text }}
+          </p>
+          <h3 class="pb-4 mx-3 font-semibold text-gray-700">
+            {{ note.date }}
+          </h3>
+          <div class="flex justify-between mx-2 mb-2">
+            <button class="text-white bg-primary w-12 rounded-md p-1">
+              Edit
+            </button>
+            <button class="">
+              Read
+            </button>
+          </div>
         </div>
+        <font-awesome-icon
+          v-if="notes?.length"
+          @click="toggleModal"
+          :icon="['fas', 'circle-plus']"
+          beat
+          class="pt-16 fa-2x text-primary cursor-pointer"
+        />
       </div>
-      <font-awesome-icon
-        v-if="notes?.length"
-        @click="toggleModal"
-        :icon="['fas', 'circle-plus']"
-        beat
-        class="pt-16 fa-2x text-primary cursor-pointer"
-      />
-    </div>
     </transition>
-    
   </div>
 
   <footer v-if="notes?.length" class="text-center pb-4">
