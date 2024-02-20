@@ -27,7 +27,8 @@ const newNotes = ref("");
 const heading = ref("");
 const errorMessage = ref("");
 const notes = ref([]);
-
+const userId = ref('')
+const email = ref('')
 
 // add data
 function getRandomColor() {
@@ -69,8 +70,9 @@ const favouriteNotes = (id) => {
 onMounted(() => {
 const user = auth.currentUser;
 if (user !== null) {
-  const uid = user.uid;
-  console.log(user);
+  userId.value = user.uid
+  email.value = user.email
+  console.log(user.uid);
 }
   try {
     const q = query(
@@ -166,7 +168,7 @@ toast("You have succesfully login", {
       </button>
     </div>
     <transition name="slide-fade">
-      <div class="flex flex-wrap gap-10 justify-center pb-24 my-20">
+      <div v-if="userId.value === email.value" class="flex flex-wrap gap-10 justify-center pb-24 my-20">
       <div
         v-for="note in notes"
         :key="note.id"

@@ -1,6 +1,7 @@
 import './assets/main.css'
 
 import { createApp } from 'vue'
+import { clerkPlugin } from 'vue-clerk/plugin'
 import App from './App.vue'
 import router from './router'
 import { createPinia } from 'pinia'
@@ -17,6 +18,10 @@ library.add(fab, fas, far)
 
 const app = createApp(App)
 const pinia = createPinia()
+
+app.use(clerkPlugin, {
+    publishableKey: import.meta.env.VITE_CLERK_PUBLISHABLE_KEY,
+  })
 
 app.use(pinia)
 

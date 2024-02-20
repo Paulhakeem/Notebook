@@ -7,7 +7,7 @@ const login = useLoginStore();
 
 </script>
 <template>
-  <div class="bg-gray-800">
+  <div class="m-auto pt-10">
     <div class="p-8 lg:w-1/2 mx-auto">
       <div class="bg-white rounded-t-lg p-8">
         <p class="text-center text-sm text-gray-400 font-light">Sign up with</p>
@@ -158,7 +158,7 @@ const login = useLoginStore();
               Create Account
             </button>
           </div>
-        </form>
+        </form> 
       </div>
     </div>
   </div>
