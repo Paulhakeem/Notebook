@@ -29,7 +29,12 @@ const errorMessage = ref("");
 const notes = ref([]);
 const userId = ref("");
 const email = ref("");
-const newNotesEdit = ref("");
+const notesEdited = ref(
+  {
+    text: null,
+    head: null,
+  }
+)
 const isEdit = ref(false);
 
 // add data
@@ -94,15 +99,14 @@ onMounted(() => {
 });
 
 // edite button
-const editNotes = (id) => {
+const editNotes = (notesEdited) => {
   isEdit.value = !isEdit.value;
   if (isEdit.value === true) {
-    // const index = notes.value.findIndex((note) => note.id === id);
-    // updateDoc(doc(collection(db, "notes"), id), {
-    //   newNotesEdit: !notes.value[index].newNotesEdit,
-    // });
-     return toggleModal()
+    notesEdited.value = notes.value
+    return toggleModal();
+
   }
+  // the end
 };
 toast("You have succesfully login", {
   autoClosed: 1000,
@@ -196,7 +200,7 @@ toast("You have succesfully login", {
           <div class="flex justify-between mx-2 mb-2">
             <div>
               <button
-                @click="editNotes"
+                @click="editNotes(note)"
                 class="text-white bg-primary w-12 rounded-md p-1"
               >
                 Edit
