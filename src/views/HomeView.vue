@@ -29,6 +29,7 @@ const errorMessage = ref("");
 const notes = ref([]);
 const userId = ref("");
 const email = ref("");
+const isEdit = ref(false)
 
 // add data
 function getRandomColor() {
@@ -101,6 +102,16 @@ onMounted(() => {
   }
 });
 
+
+// edite button
+const editNotes = () => {
+  isEdit.value = !isEdit.value;
+  if(isEdit.value === true) {
+    return toggleModal()
+  
+  }else {
+  }
+}
 toast("You have succesfully login", {
   autoClosed: 1000,
 });
@@ -191,9 +202,11 @@ toast("You have succesfully login", {
             {{ note.date }}
           </h3>
           <div class="flex justify-between mx-2 mb-2">
-            <button class="text-white bg-primary w-12 rounded-md p-1">
+           <div>
+             <button @click="editNotes" class="text-white bg-primary w-12 rounded-md p-1">
               Edit
             </button>
+           </div>
             <button class="">
               Read
             </button>
