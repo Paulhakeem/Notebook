@@ -29,7 +29,7 @@ onAuthStateChanged(auth, (user) => {
 });
 </script>
 <template>
-   <section v-if="email.value === userId.value">
+   <section v-if="email.value === email.value">
      <Header/>
   <div
     class="text-center justify-center max-w-md bg-secondary m-auto my-12 h-auto rounded-lg select-none"

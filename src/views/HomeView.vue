@@ -29,7 +29,8 @@ const errorMessage = ref("");
 const notes = ref([]);
 const userId = ref("");
 const email = ref("");
-const isEdit = ref(false)
+const newNotesEdit = ref("");
+const isEdit = ref(false);
 
 // add data
 function getRandomColor() {
@@ -56,22 +57,12 @@ const deleteNotes = (id) => {
   deleteDoc(doc(collection(db, "notes"), id));
 };
 
-// favourite notes
-const favouriteNotes = (id) => {
-  const index = notes.value.findIndex((note) => note.id === id);
-
-  updateDoc(doc(collection(db, "notes"), id), {
-    favourite: !notes.value[index].favourite,
-  });
-};
-
 // get data
 onMounted(() => {
   const user = auth.currentUser;
   if (user !== null) {
     userId.value = user.uid;
     email.value = user.email;
-    console.log(email.value);
   }
   try {
     const q = query(
@@ -102,16 +93,17 @@ onMounted(() => {
   }
 });
 
-
 // edite button
-const editNotes = () => {
+const editNotes = (id) => {
   isEdit.value = !isEdit.value;
-  if(isEdit.value === true) {
-    return toggleModal()
-  
-  }else {
+  if (isEdit.value === true) {
+    // const index = notes.value.findIndex((note) => note.id === id);
+    // updateDoc(doc(collection(db, "notes"), id), {
+    //   newNotesEdit: !notes.value[index].newNotesEdit,
+    // });
+     return toggleModal()
   }
-}
+};
 toast("You have succesfully login", {
   autoClosed: 1000,
 });
@@ -178,7 +170,7 @@ toast("You have succesfully login", {
     </div>
     <transition name="slide-fade">
       <div
-        v-if="userId.value === email.value"
+        v-if="email.value === email.value"
         class="flex flex-wrap gap-10 justify-center pb-24 my-20"
       >
         <div
@@ -202,14 +194,15 @@ toast("You have succesfully login", {
             {{ note.date }}
           </h3>
           <div class="flex justify-between mx-2 mb-2">
-           <div>
-             <button @click="editNotes" class="text-white bg-primary w-12 rounded-md p-1">
-              Edit
-            </button>
-           </div>
-            <button class="">
-              Read
-            </button>
+            <div>
+              <button
+                @click="editNotes"
+                class="text-white bg-primary w-12 rounded-md p-1"
+              >
+                Edit
+              </button>
+            </div>
+            <button class="">Read</button>
           </div>
         </div>
         <font-awesome-icon
