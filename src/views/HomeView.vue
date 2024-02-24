@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import NoteModal from "../components/NoteModal.vue";
+import EditModal from "../components/EditModal.vue";
 import Header from "../components/Header.vue";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
@@ -18,8 +19,13 @@ import {
 } from "firebase/firestore";
 
 const modalActive = ref(null);
+const editModalActive = ref(null);
 const toggleModal = () => {
   modalActive.value = !modalActive.value;
+};
+// edit modal
+const toggleEditModal = () => {
+  editModalActive.value = !editModalActive.value;
 };
 
 const auth = getAuth();
@@ -29,13 +35,8 @@ const errorMessage = ref("");
 const notes = ref([]);
 const userId = ref("");
 const email = ref("");
-const notesEdited = ref(
-  {
-    text: null,
-    head: null,
-  }
-)
-const isEdit = ref(false);
+const editHeading = ref('')
+const editMessage = ref('')
 
 // add data
 function getRandomColor() {
@@ -97,17 +98,19 @@ onMounted(() => {
     alert(err.message);
   }
 });
-
-// edite button
-const editNotes = (notesEdited) => {
-  isEdit.value = !isEdit.value;
-  if (isEdit.value === true) {
-    notesEdited.value = notes.value
-    return toggleModal();
-
-  }
-  // the end
+// open editNotes modal
+const editNotes = () => {
+  return toggleEditModal();
 };
+// save editedNotes
+const saveNotes = () => {
+  const docRef = doc(db, "notes");
+  updateDoc(docRef, {
+    text: editHeading.value,
+    head: editMessage.value
+  });
+};
+
 toast("You have succesfully login", {
   autoClosed: 1000,
 });
@@ -152,7 +155,46 @@ toast("You have succesfully login", {
     </form>
   </NoteModal>
 
-  <!-- end of modal -->
+  <!-- end of NoteModal -->
+
+  <!-- edit notes modal -->
+  <EditModal :editModalActive="editModalActive" @close-modal="toggleEditModal">
+    <h1 class="text-gray-600 text-xl font-semibold mb-4">Edit Notes</h1>
+    <form @submit.prevent="saveNotes">
+      <div class="mb-4">
+        <input
+          v-model.trim="editHeading"
+          type="text"
+          placeholder="Enter your heading"
+          class="outline-none border-b-2 border-b-gray-400 w-72 p-2"
+        />
+      </div>
+      <div class="mb-12 pt-6">
+        <label
+          for="message"
+          class="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
+          >Write your notes</label
+        >
+        <textarea
+          v-model.trim="editMessage"
+          id="message"
+          rows="4"
+          class="block p-2.5 w-full text-sm text-gray-600 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary focus:outline-none"
+          placeholder="Your message..."
+        ></textarea>
+        <p class="text-red-500 font-semibold text-sm pt-2">
+          {{ errorMessage }}
+        </p>
+      </div>
+
+      <button
+        class="mx-4 text-white bg-primary py-2 px-6 cursor-pointer"
+      >
+        SAVE
+      </button>
+    </form>
+  </EditModal>
+  <!-- end of edit notes modal -->
 
   <Header />
   <div class="my-18 mx-6">
@@ -200,7 +242,7 @@ toast("You have succesfully login", {
           <div class="flex justify-between mx-2 mb-2">
             <div>
               <button
-                @click="editNotes(note)"
+                @click="editNotes"
                 class="text-white bg-primary w-12 rounded-md p-1"
               >
                 Edit

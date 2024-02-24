@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import login from '../views/login.vue'
 import profile from '../views/profile.vue'
 import EditProfile from '../views/EditProfile.vue'
+import readNotes from '../views/readNotes.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 const router = createRouter({
@@ -28,6 +29,11 @@ const router = createRouter({
       path: '/edit',
       name: 'edit profile',
       component: EditProfile,
+    },
+    {
+      path: '/read',
+      name: 'read-note',
+      component: readNotes,
     },
   ]
 })
