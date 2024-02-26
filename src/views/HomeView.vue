@@ -14,6 +14,7 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  getDocs,
   where,
   query,
 } from "firebase/firestore";
@@ -35,9 +36,13 @@ const errorMessage = ref("");
 const notes = ref([]);
 const userId = ref("");
 const email = ref("");
-const editHeading = ref('')
-const editMessage = ref('')
+const editHeading = ref("");
+const editMessage = ref("");
 
+const updateData = {
+  head: editHeading.value,
+  text: editMessage.value
+};
 // add data
 function getRandomColor() {
   return "hsl(" + Math.random() * 360 + ", 100%, 75%)";
@@ -102,14 +107,20 @@ onMounted(() => {
 const editNotes = () => {
   return toggleEditModal();
 };
-// save editedNotes
-const saveNotes = () => {
-  const docRef = doc(db, "notes");
-  updateDoc(docRef, {
-    text: editHeading.value,
-    head: editMessage.value
-  });
-};
+ 
+// edit function
+const saveNotes = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'notes'));
+      querySnapshot.forEach(async (doc) => {
+        await updateDoc(doc.ref, updateData);
+      });
+      console.log('Documents updated successfully!');
+    } catch (error) {
+      console.error('Error updating documents:', error);
+    }
+  };
+
 
 toast("You have succesfully login", {
   autoClosed: 1000,
@@ -187,9 +198,7 @@ toast("You have succesfully login", {
         </p>
       </div>
 
-      <button
-        class="mx-4 text-white bg-primary py-2 px-6 cursor-pointer"
-      >
+      <button class="mx-4 text-white bg-primary py-2 px-6 cursor-pointer">
         SAVE
       </button>
     </form>
