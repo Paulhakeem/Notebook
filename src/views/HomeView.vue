@@ -36,13 +36,12 @@ const errorMessage = ref("");
 const notes = ref([]);
 const userId = ref("");
 const email = ref("");
-const editHeading = ref("");
-const editMessage = ref("");
+
 
 const updateData = {
-  head: editHeading.value,
-  text: editMessage.value
-};
+  head: '',
+  text: ''
+}
 // add data
 function getRandomColor() {
   return "hsl(" + Math.random() * 360 + ", 100%, 75%)";
@@ -107,20 +106,19 @@ onMounted(() => {
 const editNotes = () => {
   return toggleEditModal();
 };
- 
+
 // edit function
 const saveNotes = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(db, 'notes'));
-      querySnapshot.forEach(async (doc) => {
-        await updateDoc(doc.ref, updateData);
-      });
-      console.log('Documents updated successfully!');
-    } catch (error) {
-      console.error('Error updating documents:', error);
-    }
-  };
-
+  try {
+    const querySnapshot = await getDocs(collection(db, "notes"));
+    querySnapshot.forEach(async (doc) => {
+      await updateDoc(doc.ref, updateData);
+    });
+    console.log("Documents updated successfully!");
+  } catch (error) {
+    console.error("Error updating documents:", error);
+  }
+};
 
 toast("You have succesfully login", {
   autoClosed: 1000,
@@ -136,7 +134,7 @@ toast("You have succesfully login", {
           v-model.trim="heading"
           type="text"
           placeholder="Enter your heading"
-          class="outline-none border-b-2 border-b-gray-400 w-72 p-2"
+          class="outline-none border-b-2 border-b-gray-400 w-72 p-2 font-bold"
         />
       </div>
       <div class="mb-12 pt-6">
@@ -174,10 +172,10 @@ toast("You have succesfully login", {
     <form @submit.prevent="saveNotes">
       <div class="mb-4">
         <input
-          v-model.trim="editHeading"
+          v-model.trim="updateData.head"
           type="text"
           placeholder="Enter your heading"
-          class="outline-none border-b-2 border-b-gray-400 w-72 p-2"
+          class="outline-none border-b-2 border-b-gray-400 w-72 p-2 active:font-bold"
         />
       </div>
       <div class="mb-12 pt-6">
@@ -187,7 +185,7 @@ toast("You have succesfully login", {
           >Write your notes</label
         >
         <textarea
-          v-model.trim="editMessage"
+          v-model.trim="updateData.text"
           id="message"
           rows="4"
           class="block p-2.5 w-full text-sm text-gray-600 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary focus:outline-none"
