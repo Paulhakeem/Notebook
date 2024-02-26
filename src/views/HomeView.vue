@@ -37,11 +37,10 @@ const notes = ref([]);
 const userId = ref("");
 const email = ref("");
 
-
 const updateData = {
-  head: '',
-  text: ''
-}
+  head: "",
+  text: "",
+};
 // add data
 function getRandomColor() {
   return "hsl(" + Math.random() * 360 + ", 100%, 75%)";
@@ -75,10 +74,7 @@ onMounted(() => {
     email.value = user.email;
   }
   try {
-    const q = query(
-      collection(db, "notes")
-      // where("uid", "==", user.value.uid)
-    );
+    const q = query(collection(db, "notes"));
     onSnapshot(q, (querySnapshot) => {
       const getNotes = [];
       querySnapshot.forEach((doc) => {
@@ -114,15 +110,15 @@ const saveNotes = async () => {
     querySnapshot.forEach(async (doc) => {
       await updateDoc(doc.ref, updateData);
     });
-    console.log("Documents updated successfully!");
+    toast.success("Notes updated successfully", {
+      autoClosed: 1000,
+    });
   } catch (error) {
-    console.error("Error updating documents:", error);
+      toast.error("Notes updated fail", {
+      autoClosed: 1000,
+    });
   }
 };
-
-toast("You have succesfully login", {
-  autoClosed: 1000,
-});
 </script>
 
 <template>
